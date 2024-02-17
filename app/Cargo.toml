@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 actix-web = "4.5.1"
-timecard = { path = "../lib/timecard", version = "0.1.0" }
+timecard = { path = "../lib/timestamp", version = "0.1.0" }
