@@ -86,6 +86,9 @@ tests/rustdoc-gui/src/**.lock
 ## Environment file
 .env
 
+## database
+migrations/
+
 ## others
 xdg-open
 
