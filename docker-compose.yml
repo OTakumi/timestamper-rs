@@ -19,9 +19,9 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - ./postgres_cont:/var/lib/postgresql/data
+      - ./timestamper_db_store:/var/lib/postgresql/data
       - ./init:/docker-entrypoint-initdb.d
 
 volumes:
-  postgres_cont:
+  timestamer_db_store:
     external: true
