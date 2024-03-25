@@ -1,29 +1,53 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
-use timestamp;
+use clap::Parser;
+mod time_stamp;
+mod calc;
 
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
+// TODO: 開始打刻できる
+// TODO: 終了打刻できる
+// TODO: 当日の稼働時間を表示する
+// TODO: 当月の合計稼働時間を表示する
+// TODO: 当月の稼働日数を表示する
+// TODO: 打刻一覧をCSVファイルで出力する
+
+#[derive(Parser)]
+#[clap(
+    name = "Time stamper",
+    version = "v0.1.0",
+    about = "Worktime punch application"
+)]
+
+struct Cli {
+    /// Punch start work time
+    #[arg(short, long)]
+    start: bool,
+
+    /// Punch end work time
+    #[arg(short, long)]
+    end: bool,
+
+    /// Show worktime of today
+    #[arg(short, long)]
+    today: bool,
+
+    /// Show worktime of this month
+    #[arg(short, long)]
+    month: bool,
 }
 
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
+fn main() {
+    let cli: Cli = Cli::parse();
 
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
-}
+    if cli.start {
+        let timestamp = time_stamp::TimeStamp::new();
+        println!("Start Time: {:?}", timestamp.get_start_work_time());
+    }
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .service(hello)
-            .service(echo)
-            .route("/hey", web::get().to(manual_hello))
-    })
-    .bind(("0.0.0.0", 8080))?
-    .run()
-    .await
+    if cli.end {
+        let timestamp = time_stamp::TimeStamp::new();
+        println!("End Time: {:?}", timestamp.get_end_work_time());
+    }
+
+    if cli.month {
+        println!("This month worktime: ");
+    }
 }
