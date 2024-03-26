@@ -1,10 +1,10 @@
 // read csv file and return a vector of the rows
+use chrono::prelude::*;
+use csv::Reader;
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
-use csv::Reader;
-use chrono::prelude::*;
 
 struct CsvReader {
     file_path: String,

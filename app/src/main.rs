@@ -1,6 +1,5 @@
 use clap::Parser;
 mod time_stamp;
-mod calc;
 
 // TODO: 開始打刻できる
 // TODO: 終了打刻できる
@@ -32,22 +31,30 @@ struct Cli {
     /// Show worktime of this month
     #[arg(short, long)]
     month: bool,
+
+    /// Show work status
+    #[arg(long)]
+    status: bool,
 }
 
 fn main() {
     let cli: Cli = Cli::parse();
+    let mut timestamp = time_stamp::TimeStamp::new();
 
     if cli.start {
-        let timestamp = time_stamp::TimeStamp::new();
+        println!("{:?}", timestamp.punch_start_work_now());
         println!("Start Time: {:?}", timestamp.get_start_work_time());
     }
 
     if cli.end {
-        let timestamp = time_stamp::TimeStamp::new();
         println!("End Time: {:?}", timestamp.get_end_work_time());
     }
 
     if cli.month {
         println!("This month worktime: ");
+    }
+
+    if cli.status {
+        println!("Work status: {:?}", timestamp.get_work_status());
     }
 }
