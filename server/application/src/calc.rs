@@ -60,4 +60,34 @@ pub fn get_today_total_work_time(rows: Vec<Vec<String>>) -> Result<TotalWorkTime
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn total_worktime_is_0_when_no_data() {
+        let rows: Vec<Vec<String>> = Vec::new();
+        let total_work_time = get_today_total_work_time(rows).unwrap();
+        assert_eq!(total_work_time.total, Utc.timestamp(0, 0));
+    }
+
+    #[test]
+    fn total_worktime_of_month() {
+        let rows: Vec<Vec<String>> = vec![
+            vec![
+                "2021-01-01T00:00:00Z".to_string(),
+                "2021-01-01T09:00:00Z".to_string(),
+                "2021-01-01T18:00:00Z".to_string(),
+            ],
+            vec![
+                "2021-01-02T00:00:00Z".to_string(),
+                "2021-01-02T09:00:00Z".to_string(),
+                "2021-01-02T18:00:00Z".to_string(),
+            ],
+            vec![
+                "2021-01-03T00:00:00Z".to_string(),
+                "2021-01-03T09:00:00Z".to_string(),
+                "2021-01-03T18:00:00Z".to_string(),
+            ],
+        ];
+        let total_work_time = get_today_total_work_time(rows).unwrap();
+        assert_eq!(total_work_time.total, Utc.timestamp(27_000, 0));
+    }
 }
