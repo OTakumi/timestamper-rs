@@ -40,6 +40,10 @@ pub struct Employee {
 impl Employee {
     /// Create a new Employee
     pub fn new(name: String) -> Self {
+        if name.is_empty() {
+            panic!("Employee name cannot be empty");
+        }
+
         Employee {
             id: ID::new(),
             name,
@@ -66,5 +70,14 @@ mod tests {
         let employee = Employee::new("John Doe".to_string());
         assert_eq!(employee.name, "John Doe");
         assert_eq!(employee.status, WorkingStatus::NotWorking);
+    }
+
+    #[test]
+    /// check the employee name cannot be is_empty
+    fn test_new_employee_empty_name() {
+        let result = std::panic::catch_unwind(|| {
+            Employee::new("".to_string());
+        });
+        assert!(result.is_err());
     }
 }
